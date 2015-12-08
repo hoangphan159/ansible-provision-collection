@@ -1,0 +1,23 @@
+---
+# tasks file for matplotlib
+- name: Install requirements
+  apt: pkg={{ item }} state=installed
+  with_items:
+    - libpng-dev
+    - libjpeg8-dev
+    - libfreetype6-dev
+    - libxft-dev
+
+- name: Install virtualenv
+  pip: name=virtualenv
+
+- name: check if virtualenv already exists
+  stat: path={{ virtualenv_dir }}
+  register: venv_dir
+
+- name: create virtualenv for dato if not exists
+  shell: virtualenv {{ virtualenv_dir }}
+  when: venv_dir.stat.isdir is not defined
+
+- name: Install matplotlib
+  pip: name=matplotlib virtualenv={{ virtualenv_dir }} extra_args="--upgrade --no-cache-dir"

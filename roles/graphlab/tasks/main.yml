@@ -1,0 +1,26 @@
+---
+# tasks file for graphlab
+- name: Install pip
+  apt: pkg={{ item }} state=installed
+  with_items:
+    - python-dev
+    - python-pip
+
+- name: Install virtualenv
+  pip: name=virtualenv
+
+- name: check if virtualenv already exists
+  stat: path={{ virtualenv_dir }}
+  register: venv_dir
+
+- name: create virtualenv for dato if not exists
+  shell: virtualenv {{ virtualenv_dir }}
+  when: venv_dir.stat.isdir is not defined
+
+- name: Install jupyter
+  pip: name=jupyter virtualenv={{ virtualenv_dir }}
+
+- name: Install graphlab
+  pip: name={{ graphlab_link }}
+    extra_args="--upgrade --no-cache-dir"
+    virtualenv={{ virtualenv_dir }}

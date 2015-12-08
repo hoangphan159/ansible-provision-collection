@@ -1,0 +1,4 @@
+---
+# defaults file for graphlab
+virtualenv_dir: "~/Envs/dato_env"
+graphlab_link: "https://get.dato.com/GraphLab-Create/1.7.1/hoangds121@gmail.com/9D18-2954-09D5-C85E-011D-494D-C0DD-AA94/GraphLab-Create-License.tar.gz"
