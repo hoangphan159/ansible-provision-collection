@@ -1,0 +1,5 @@
+- hosts: local
+  become: yes
+  become_method: sudo
+  roles:
+    - neo4j

@@ -1,0 +1,7 @@
+#!/usr/bin/env ruby
+#^syntax detection
+
+site "https://galaxy.ansible.com/api/v1"
+
+role "malk.ansible-java8-oracle",
+  github: "malk/ansible-java8-oracle"

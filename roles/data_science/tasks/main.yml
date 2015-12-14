@@ -1,12 +1,15 @@
 ---
-# tasks file for matplotlib
-- name: Install requirements
+# tasks file for data_sciences
+- name: Install pip
   apt: pkg={{ item }} state=installed
   with_items:
-    - libpng-dev
-    - libjpeg8-dev
-    - libfreetype6-dev
-    - libxft-dev
+    - python-dev
+    - python-pip
+    - libblas-dev 
+    - liblapack-dev 
+    - libatlas-base-dev 
+    - gfortran
+    - build-essential
 
 - name: Install virtualenv
   pip: name=virtualenv
@@ -19,5 +22,10 @@
   shell: virtualenv {{ virtualenv_dir }}
   when: venv_dir.stat.isdir is not defined
 
-- name: Install matplotlib
-  pip: name=matplotlib virtualenv={{ virtualenv_dir }} extra_args="--upgrade --no-cache-dir"
+- name: Install packages
+  pip: name={{ item }} virtualenv={{ virtualenv_dir }}
+  with_items:
+    - jupyter
+    - pandas
+    - scipy
+    - sklearn

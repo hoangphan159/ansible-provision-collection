@@ -1,0 +1,10 @@
+---
+- hosts: all
+  become: True
+  become_method: sudo
+  roles:
+   # - role: graphlab
+   # - role: matplotlib
+   # - role: neo4j
+   # - role: abl_wiki
+   - role: data_science

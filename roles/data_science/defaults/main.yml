@@ -1,0 +1,3 @@
+---
+# defaults file for data_science
+virtualenv_dir: "~/.virtualenv/data_science_env"

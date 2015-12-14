@@ -1,0 +1,34 @@
+- name: Create new GCE instances
+  hosts: localhost
+  gather_facts: no
+  vars:
+    names: mesos-master,mesos-slave
+    type: n1-standard-1
+    image: ubuntu-1404-trusty-v20151113
+    zone: asia-east1-a
+    service_account_email: hoangphan@spring-paratext-112704.iam.gserviceaccount.com
+    pem_file: /home/hoangphan/Downloads/hoangphan.json
+    project_id: spring-paratext-112704
+  tasks:
+    - name: Create instances
+      local_action:
+        module: gce
+        instance_names: '{{ names }}'
+        machine_type: '{{ type }}'
+        image: '{{ image }}'
+        zone: '{{ zone }}'
+        service_account_email: '{{ service_account_email }}'
+        pem_file: '{{ pem_file }}'
+        project_id: '{{ project_id }}'
+      register: gce
+
+- name: Open port 80 to allow Apache
+  hosts: localhost
+  gather_facts: no
+  tasks:
+    - name: Allow HTTP
+      local_action:
+        module: gce_net
+        name: default
+        allowed: tcp:80
+        fwname: all-http
