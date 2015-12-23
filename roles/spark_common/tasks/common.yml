@@ -1,0 +1,13 @@
+---
+- name: modify host file add node
+  lineinfile: dest=/etc/hosts line={{ item }}
+  with_items:
+    - "130.211.250.66  node1"
+    - "104.155.221.174 node2"
+    - "104.155.236.168 node3"
+
+# - name: get spark package
+#   get_url: url=http://d3kbcqa49mib13.cloudfront.net/spark-1.5.2-bin-hadoop2.6.tgz dest=/opt/spark-1.5.2-bin-hadoop2.6.tgz mode=0777
+
+- name: untar spark package
+  unarchive: src=http://d3kbcqa49mib13.cloudfront.net/spark-1.5.2-bin-hadoop2.6.tgz dest=/opt/ copy=no 

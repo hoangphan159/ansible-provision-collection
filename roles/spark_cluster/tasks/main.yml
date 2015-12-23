@@ -1,0 +1,3 @@
+---
+# tasks file for spark_cluster
+- include: common.yml
