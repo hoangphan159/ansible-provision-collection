@@ -1,0 +1,11 @@
+- name: Allow HTTP
+  local_action: gce_net
+  args:
+    fwname: "allow-port-{{ port }}"
+    name: "default"
+    allowed: "tcp:{{ port }}"
+    state: "present"
+    service_account_email: "{{ service_account_email }}"
+    pem_file: "{{ pem_file }}"
+    project_id: "{{ project_id }}"
+  when: action == 'open-port'

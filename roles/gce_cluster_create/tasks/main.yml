@@ -1,0 +1,38 @@
+---
+- include: open_port.yml
+
+- name: Create persistence disk for instances
+  local_action:
+    module: gce_pd
+    size_gb: 100
+    mode: READ_WRITE
+    name: "{{ names }}pd"
+    zone: '{{ zone }}'
+    service_account_email: '{{ service_account_email }}'
+    pem_file: '{{ pem_file }}'
+    project_id: '{{ project_id }}'
+    image: '{{ image }}'
+  register: disk
+
+- name: Create instances
+  local_action:
+    module: gce
+    instance_names: '{{ names }}'
+    machine_type: '{{ type }}'
+    zone: '{{ zone }}'
+    disks: '{{ names }}pd'
+    service_account_email: '{{ service_account_email }}'
+    pem_file: '{{ pem_file }}'
+    project_id: '{{ project_id }}'
+  register: gce
+  when: action == 'create'
+
+- name: Wait for SSH to come up
+  wait_for: host={{ item.public_ip }} port=22 delay=10 timeout=60
+  with_items: gce.instance_data
+  when: action == 'create'
+
+# - name: Add host to groupname
+#   add_host: hostname={{ item.public_ip }} groupname={{ group_name }}
+#   with_items: gce.instance_data
+#   when: action == 'create'
