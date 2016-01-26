@@ -1,2 +1,9 @@
 ---
 # defaults file for /home/hoangphan/codes/courses/ansible-provision-collection/roles/spark_master
+
+local_private_key_path: /home/hoangphan/codes/courses/ansible-provision-collection/keys/hai_id_rsa
+
+spark_download_url:
+
+spark_version: 1.5.2-bin-hadoop2.6
+spark_root: /opt/spark-{{ spark_version }}

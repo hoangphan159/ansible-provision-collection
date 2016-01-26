@@ -1,2 +1,5 @@
 ---
 # defaults file for spark_cluster
+spark_download_url: http://d3kbcqa49mib13.cloudfront.net/spark-1.5.2-bin-hadoop2.6.tgz
+spark_version: 1.5.2-bin-hadoop2.6
+spark_root: /opt/spark

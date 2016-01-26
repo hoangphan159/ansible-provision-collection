@@ -1,3 +1,36 @@
 ---
+- name: Generating RSA key for root
+  user: name=root generate_ssh_key=yes
+  tags:
+    - initialize
 
-# tasks file for /home/hoangphan/codes/courses/ansible-provision-collection/roles/spark_master
+- name: Downloading pub key
+  fetch: src=/root/.ssh/id_rsa.pub dest=/tmp/id_rsa.tmp flat=yes
+  tags:
+    - initialize
+
+- name: Copying local key to other.server.net
+  local_action: shell cat /tmp/id_rsa.tmp | ssh -i {{ local_private_key_path }} ubuntu@{{ item }} "sudo su -c 'cat >> /root/.ssh/authorized_keys'"
+  with_items: "{{ groups.spark_slave }}"
+  tags:
+    - initialize
+
+- name: Deleting temporal files
+  local_action: file  path=/tmp/id_rsa.tmp state=absent
+  tags:
+    - initialize
+
+- name: Configure Spark to run in standalone deploy mode
+  template: src=conf/spark-env.sh.j2 dest={{ spark_root }}/conf/spark-env.sh
+  tags:
+    - configure
+
+- name: populate conf/slaves file
+  template: src=conf/slaves.j2 dest={{ spark_root }}/conf/slaves
+  tags:
+    - configure
+
+- name: Attempt to start Spark cluster
+  shell: "{{ spark_root }}/sbin/start-all.sh"
+  tags:
+    - run

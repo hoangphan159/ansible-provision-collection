@@ -1,0 +1,4 @@
+# Spark slaves list
+{% for host in groups.spark_slave %}
+{{ hostvars[host]['ansible_' + iface]['ipv4']['address'] }}
+{% endfor %}
